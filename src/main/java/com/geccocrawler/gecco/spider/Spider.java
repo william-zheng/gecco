@@ -79,7 +79,9 @@ public class Spider implements Runnable {
 				} else {
 					//获取SpiderBean的上下文：downloader,beforeDownloader,afterDownloader,render,pipelines
 					SpiderBeanContext context = getSpiderBeanContext();
+//					log.debug("currSpiderBeanClass:" + currSpiderBeanClass.getName());
 					response = download(context, request);
+//					log.debug("response:" + response);
 					if(response.getStatus() == 200) {
 						//render
 						Render render = context.getRender();
@@ -93,6 +95,7 @@ public class Spider implements Runnable {
 			} catch(RenderException rex) {
 				if(engine.isDebug()) {
 					log.error(rex);
+					rex.printStackTrace();
 				} else {
 					log.error(rex.getMessage());
 				}

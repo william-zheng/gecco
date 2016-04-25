@@ -39,11 +39,19 @@ public class HtmlParser {
 		long beginTime = System.currentTimeMillis();
 		log = LogFactory.getLog(HtmlParser.class);
 		this.baseUri = baseUri;
+
+		if (content.trim().startsWith("<tr ") || content.trim().startsWith("<tr>")) {
+			content = "<table>" + content + "</table>";
+		}
+
 		this.document = Jsoup.parse(content, baseUri);
 		long endTime = System.currentTimeMillis();
 		if(log.isTraceEnabled()) {
 			log.trace("init html parser : " + (endTime - beginTime) + "ms");
 		}
+//		if (SpiderThreadLocal.get().getEngine().isDebug()) {
+//			System.out.println("zwy:" + baseUri + ":" + content);
+//		}
 	}
 	
 	public String baseUri() {

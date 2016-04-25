@@ -67,11 +67,13 @@ public abstract class AbstractRender implements Render {
 					customFieldRender.render(request, response, beanMap, bean, customField);
 				}
 			}
+//			System.out.println("beanMap = " + beanMap);
 			requests(request, bean);
 			return bean;
 		} catch(FieldRenderException ex) {
 			throw new RenderException(ex.getMessage(), clazz, ex);
 		} catch(Exception ex) {
+//			ex.printStackTrace();
 			throw new RenderException(ex.getMessage(), clazz);
 		}
 	}

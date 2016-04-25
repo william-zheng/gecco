@@ -62,6 +62,11 @@ public class JsonFieldRender implements FieldRender {
 		String jsonPath = JSONPath.value();
 		Class<?> type = field.getType();//类属性的类
 		Object src = com.alibaba.fastjson.JSONPath.eval(json, jsonPath);
+//
+//		System.out.println("jsonPath = " + jsonPath);
+//		System.out.println("json = " + json);
+//		System.out.println("src = " + src);
+
 		boolean isList = ReflectUtils.haveSuperType(type, List.class);//是List类型
 		if(isList) {
 			Type genericType = field.getGenericType();//获得包含泛型的类型

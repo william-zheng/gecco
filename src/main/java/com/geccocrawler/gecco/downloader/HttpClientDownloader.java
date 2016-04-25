@@ -144,13 +144,18 @@ public class HttpClientDownloader extends AbstractDownloader {
 			} else if(status == 200) {
 				HttpEntity responseEntity = response.getEntity();
 				resp.setRaw(responseEntity.getContent());
-				String contentType = responseEntity.getContentType().getValue();
+				String contentType = responseEntity.getContentType() == null ? null : responseEntity.getContentType().getValue();
 				resp.setContentType(contentType);
 				String charset = getCharset(request.getCharset(), contentType);
 				resp.setCharset(charset);
 				//String content = EntityUtils.toString(responseEntity, charset);
 				String content = getContent(responseEntity, charset);
 				resp.setContent(content);
+
+				if(log.isDebugEnabled()) {
+//					log.debug("HttpResponse..." + resp.getContent());
+//					new Exception("zwy debug").printStackTrace();
+				}
 			} else {
 				//404，500等
 				throw new DownloadServerException("" + status);
