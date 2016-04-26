@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.geccocrawler.gecco.annotation.Undefinable;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.reflections.ReflectionUtils;
 
 import net.sf.cglib.beans.BeanMap;
@@ -28,6 +31,8 @@ import com.geccocrawler.gecco.spider.render.RenderType;
 import com.geccocrawler.gecco.utils.ReflectUtils;
 
 public class JsonFieldRender implements FieldRender {
+
+	private static Log log = LogFactory.getLog(JsonFieldRender.class);
 	
 	@Override
 	public void render(HttpRequest request, HttpResponse response, BeanMap beanMap, SpiderBean bean) throws FieldRenderException {
@@ -83,9 +88,14 @@ public class JsonFieldRender implements FieldRender {
 			return list;
 		} else {
 			//Object
-			if(src == null) {
+			Undefinable nullable = field.getAnnotation(Undefinable.class);
+			if(nullable == null && src == null) {
 				throw new FieldRenderException(field, jsonPath + " not found in : " + json);
+			} else if (src == null) {
+				log.warn(field.getName() + " is undefined!");
+				return null;
 			}
+
 			try {
 				return Conversion.getValue(field.getType(), src);
 			} catch(Exception ex) {
